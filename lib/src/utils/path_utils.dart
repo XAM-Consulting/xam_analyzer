@@ -1,13 +1,15 @@
 import 'dart:io';
 
-String? uriToPath(Uri? uri) {
-  if (uri == null) {
-    return null;
-  }
+abstract class PathUtils {
+  static String? uriToPath(Uri? uri) {
+    if (uri == null) {
+      return null;
+    }
 
-  if (uri.scheme == 'file') {
-    return uri.toFilePath();
-  }
+    if (uri.scheme == 'file') {
+      return uri.toFilePath();
+    }
 
-  return File(uri.path).absolute.path;
+    return File(uri.path).absolute.path;
+  }
 }

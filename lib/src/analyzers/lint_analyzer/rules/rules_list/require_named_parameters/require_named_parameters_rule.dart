@@ -12,6 +12,11 @@ import 'package:xam_analyzer/src/utils/node_utils.dart';
 part 'visitor.dart';
 
 class RequireNamedParametersRule extends CommonRule {
+  static const ruleId = 'require-named-parameters';
+  static const _warning =
+      'Methods and constructors with more than one parameter should use named parameters.';
+  static const _correctionMessage = 'XAM: Convert to named parameters.';
+
   RequireNamedParametersRule([Map<String, Object> config = const {}])
       : super(
           id: ruleId,
@@ -19,10 +24,6 @@ class RequireNamedParametersRule extends CommonRule {
           excludes: readExcludes(config),
           includes: readIncludes(config),
         );
-  static const String ruleId = 'require-named-parameters';
-  static const _warning =
-      'Methods and constructors with more than one parameter should use named parameters.';
-  static const _correctionMessage = 'XAM: Convert to named parameters.';
 
   @override
   Iterable<Issue> check(InternalResolvedUnitResult source) {
@@ -34,7 +35,7 @@ class RequireNamedParametersRule extends CommonRule {
         .map(
           (node) => createIssue(
             rule: this,
-            location: nodeLocation(node: node, source: source),
+            location: NodeUtils.nodeLocation(node: node, source: source),
             message: _warning,
             replacement: _createReplacement(node),
           ),

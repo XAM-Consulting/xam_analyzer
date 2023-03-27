@@ -3,8 +3,12 @@ import 'package:glob/glob.dart';
 import 'package:xam_analyzer/src/analyzers/lint_analyzer/rules/models/rule.dart';
 
 /// Represents converted lint config which contains parsed entities.
-
 class LintAnalysisConfig {
+  final Iterable<Glob> globalExcludes;
+  final Iterable<Rule> codeRules;
+  final Iterable<Glob> rulesExcludes;
+  final String rootFolder;
+  final String? analysisOptionsPath;
 
   const LintAnalysisConfig(
     this.globalExcludes,
@@ -13,11 +17,6 @@ class LintAnalysisConfig {
     this.rootFolder,
     this.analysisOptionsPath,
   );
-  final Iterable<Glob> globalExcludes;
-  final Iterable<Rule> codeRules;
-  final Iterable<Glob> rulesExcludes;
-  final String rootFolder;
-  final String? analysisOptionsPath;
 
   Map<String, Object?> toJson() => {
         'rules': codeRules.map((rule) => rule.toJson()).toList(),

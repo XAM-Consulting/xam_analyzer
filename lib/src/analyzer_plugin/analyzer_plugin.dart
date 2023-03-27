@@ -138,9 +138,14 @@ class AnalyzerPlugin extends ServerPlugin {
           _analyzer.runPluginAnalysis(analysisResult, config, rootPath);
 
       if (report != null) {
-        result.addAll([
-          ...report.issues,
-        ].map((issue) => codeIssueToAnalysisErrorFixes(issue, analysisResult)),);
+        result.addAll(
+          [
+            ...report.issues,
+          ].map((issue) => AnalyzerPluginUtils.codeIssueToAnalysisErrorFixes(
+                issue,
+                analysisResult,
+              )),
+        );
       }
     }
 
@@ -152,8 +157,10 @@ class AnalyzerPlugin extends ServerPlugin {
     final file = analysisContext.contextRoot.optionsFile;
 
     if (file != null && file.exists) {
-      final analysisOptions = analysisOptionsFromContext(analysisContext) ??
-          analysisOptionsFromFilePath(file.parent.path, analysisContext);
+      final analysisOptions =
+          AnalysisOptions.analysisOptionsFromContext(analysisContext) ??
+              AnalysisOptions.analysisOptionsFromFilePath(
+                  file.parent.path, analysisContext);
       final config = ConfigBuilder.getLintConfigFromOptions(analysisOptions);
 
       final lintConfig = ConfigBuilder.getLintAnalysisConfig(
@@ -177,9 +184,12 @@ class AnalyzerPlugin extends ServerPlugin {
     final report =
         LintAnalysisOptionsValidator.validateOptions(config, rootPath);
     if (report != null) {
-      result.addAll(report.issues.map(
-        (issue) => codeIssueToAnalysisErrorFixes(issue, null),
-      ),);
+      result.addAll(
+        report.issues.map(
+          (issue) =>
+              AnalyzerPluginUtils.codeIssueToAnalysisErrorFixes(issue, null),
+        ),
+      );
     }
 
     channel.sendNotification(

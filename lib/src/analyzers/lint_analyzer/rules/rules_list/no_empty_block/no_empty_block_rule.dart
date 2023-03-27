@@ -15,7 +15,6 @@ part 'visitor.dart';
 // Inspired by TSLint (https://palantir.github.io/tslint/rules/no-empty/)
 
 class NoEmptyBlockRule extends CommonRule {
-
   NoEmptyBlockRule([Map<String, Object> config = const {}])
       : super(
           id: ruleId,
@@ -35,11 +34,13 @@ class NoEmptyBlockRule extends CommonRule {
     source.unit.visitChildren(visitor);
 
     return visitor.emptyBlocks
-        .map((block) => createIssue(
-              rule: this,
-              location: nodeLocation(node: block, source: source),
-              message: _warning,
-            ),)
+        .map(
+          (block) => createIssue(
+            rule: this,
+            location: NodeUtils.nodeLocation(node: block, source: source),
+            message: _warning,
+          ),
+        )
         .toList(growable: false);
   }
 }
